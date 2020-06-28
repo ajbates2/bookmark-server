@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
+const logger = require('./logger')
 const { NODE_ENV } = require('./config')
 const bookmarkRouter = require('./bookmark/bookmark-router')
 
@@ -22,7 +23,7 @@ app.use(function validateBearerToken(req, res, next) {
 
     if (!authToken || authToken.split(' ')[1] !== apiToken) {
         logger.error(`Unauthorized request to path: ${req.path}`);
-        return res.status(501).json({ error: 'Unauthorized request' })
+        return res.status(401).json({ error: 'Unauthorized request' })
     }
     next()
 })
